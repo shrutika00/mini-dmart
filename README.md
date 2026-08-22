@@ -4,6 +4,13 @@ Mini D-Mart is a simple, clean, and beginner-friendly full-stack grocery store w
 
 ---
 
+## Live Links
+* **Live Application**: `<FINAL_VERCEL_URL>`
+* **Backend API**: `<FINAL_RENDER_URL>`
+* **GitHub Repository**: [https://github.com/shrutika00/mini-dmart](https://github.com/shrutika00/mini-dmart)
+
+---
+
 ## 1. Project Overview
 Mini D-Mart is built to emulate a simplified version of a grocery platform similar to D-Mart. It allows customers to browse, search, and filter items, add them to a cart, check out with either Home Delivery or Store Pickup, track orders, and request returns or exchanges. It provides staff members with order fulfillment dashboards and inventory previews, while administrators get full CRUD controls over products, categories, users, and overall analytics.
 
@@ -61,7 +68,6 @@ mini-dmart/
 │   ├── models/          # Sequelize relational models
 │   ├── routes/          # REST API route endpoints
 │   ├── seed/            # Seed data and SQL scripting
-│   ├── .env.example     # Placeholder variables
 │   ├── package.json     # Node scripts & dependencies
 │   └── server.js        # Main server entry file
 │
@@ -76,10 +82,12 @@ mini-dmart/
 │   │   ├── index.css    # Master stylesheet (Plain CSS)
 │   │   └── main.jsx     # React root renderer
 │   ├── package.json     # Vite scripts & dependencies
+│   ├── vercel.json      # Vercel SPA routing rewrites config
 │   └── index.html       # Vite root index file
 │
 ├── README.md            # Setup guide and instructions
 ├── SECURITY.md          # Security specifications
+├── .env.example         # Root-level env template
 └── .gitignore
 ```
 
@@ -153,22 +161,19 @@ Refer to the detailed Sequelize schema model definitions:
 ---
 
 ## 10. Environment Variables
-Create a `.env` file in the `backend/` directory based on the `.env.example` template:
+Configure the environment variables using the `.env.example` file located at the root of the repository:
 
 ```env
 PORT=5000
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=Root
-DB_NAME=mini_dmart
+DATABASE_URL=postgres://user:password@host:port/database_name
 JWT_SECRET=dev_secret_jwt_minidmart_987654321_abc
 NODE_ENV=development
+FRONTEND_URL=http://localhost:3000
 ```
 
 ---
 
-## 11. Setup & Seeding Instructions
+## 11. Local Setup & Seeding Instructions
 1. Ensure PostgreSQL is running locally on port `5432` with username `postgres` and password `Root`.
 2. Connect to psql and create the database:
    ```sql
@@ -203,7 +208,7 @@ These credentials are seeded by the script for testing purposes:
 
 ---
 
-## 13. How to Run the Application
+## 13. How to Run the Application Locally
 
 ### Running Backend Server
 ```bash
@@ -217,14 +222,40 @@ Starts backend server on `http://localhost:5000`.
 cd frontend
 npm run dev
 ```
-Starts development server on `http://localhost:3000`. The Vite server is pre-configured to proxy API requests to port `5000` automatically.
+Starts development server on `http://localhost:3000`.
 
 ---
 
 ## 14. Deployment Instructions
-* **Backend**: Can be deployed to platforms like Render or Heroku. Configure your database string inside environment variables.
-* **Frontend**: Can be deployed to Vercel, Netlify, or Amplify.
-* **Database**: Managed databases like Supabase, Render PostgreSQL, or AWS RDS PostgreSQL can be used for hosting the database in production. Update your database configuration variables inside `.env` accordingly.
+
+### Database Setup
+1. Create a **Render PostgreSQL** database or use another host (e.g. Supabase, Neon).
+2. Copy the external connection string (`DATABASE_URL`).
+
+### Backend Deployment (Render)
+1. Register on [Render.com](https://render.com/).
+2. Create a new **Web Service** and link your GitHub repository.
+3. Configure settings:
+   - **Root Directory**: `backend`
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+4. Add these Environment Variables:
+   - `DATABASE_URL` = `<your_postgres_connection_string>`
+   - `JWT_SECRET` = `<your_jwt_secret_key>`
+   - `NODE_ENV` = `production`
+   - `FRONTEND_URL` = `<your_deployed_vercel_frontend_url>`
+5. Click **Deploy**. Note the URL (e.g., `https://your-backend.onrender.com`).
+
+### Frontend Deployment (Vercel)
+1. Register on [Vercel.com](https://vercel.com/).
+2. Create a new **Project** and import your GitHub repository.
+3. Configure settings:
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+4. Add this Environment Variable:
+   - `VITE_API_URL` = `<your_deployed_render_backend_url>`
+5. Click **Deploy**.
 
 ---
 
