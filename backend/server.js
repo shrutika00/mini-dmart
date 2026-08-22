@@ -7,9 +7,24 @@ const errorHandler = require('./middleware/errorMiddleware');
 
 const app = express();
 
-// Middleware
+// CORS dynamic configuration based on environment
+const allowedOrigins = process.env.NODE_ENV === 'production'
+  ? [process.env.FRONTEND_URL]
+  : ['http://localhost:3000', 'http://127.0.0.1:3000'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
 app.use(helmet());
-app.use(cors());
 app.use(express.json());
 
 // Mount routes
@@ -21,7 +36,15 @@ app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/returns', require('./routes/returnRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 
-// Basic health check route
+// Production Health check route
+app.get('/api/health', (req, res) => {
+  res.json({
+    success: true,
+    message: "Mini D-Mart API is running"
+  });
+});
+
+// Basic check route (root)
 app.get('/', (req, res) => {
   res.json({ success: true, message: 'Mini D-Mart Postgres API is running' });
 });
@@ -34,11 +57,12 @@ const PORT = process.env.PORT || 5000;
 // Connect to database and sync tables, then start listening
 connectDB().then(async () => {
   try {
-    await sequelize.sync(); // Auto-create tables in local PostgreSQL
+    // Explicitly lock sync to force=false, alter=false to protect production database
+    await sequelize.sync({ force: false, alter: false }); 
     console.log('PostgreSQL Tables Synchronized Successfully');
     
     const server = app.listen(PORT, () => {
-      console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+      console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
     });
 
     // Handle unhandled promise rejections

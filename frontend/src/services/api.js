@@ -1,4 +1,4 @@
-const API_URL = '/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Helper to make fetch requests with auth headers
 const request = async (endpoint, options = {}) => {
