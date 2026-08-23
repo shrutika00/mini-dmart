@@ -5,8 +5,8 @@ Mini D-Mart is a simple, clean, and beginner-friendly full-stack grocery store w
 ---
 
 ## Live Links
-* **Live Application**: `<FINAL_VERCEL_URL>`
-* **Backend API**: `<FINAL_RENDER_URL>`
+* **Live Application**: [https://mini-dmart-mauve.vercel.app](https://mini-dmart-mauve.vercel.app)
+* **Backend API**: [https://mini-dmart-2f6r.onrender.com](https://mini-dmart-2f6r.onrender.com)
 * **GitHub Repository**: [https://github.com/shrutika00/mini-dmart](https://github.com/shrutika00/mini-dmart)
 
 ---
@@ -51,7 +51,7 @@ This version uses **PostgreSQL** as the primary relational database with **Seque
 ---
 
 ## 4. Architecture
-The application uses a **three-tier client-server MERN/PERN architecture**:
+The application uses a **three-tier client-server PERN architecture**:
 1. **Presentation Layer (Client)**: React SPA talking to the backend REST endpoints.
 2. **Application Layer (Server)**: Node/Express REST API serving JSON responses.
 3. **Data Layer (Database)**: PostgreSQL relational database storing tables for users, categories, products, carts, cart_items, orders, order_items, and returns.
@@ -95,15 +95,15 @@ mini-dmart/
 
 ## 6. Database Design (Sequelize Relational Tables)
 Refer to the detailed Sequelize schema model definitions:
-* **User**: [`User.js`](file:///D:/projects/mini-dmart/backend/models/User.js)
-* **Category**: [`Category.js`](file:///D:/projects/mini-dmart/backend/models/Category.js)
-* **Product**: [`Product.js`](file:///D:/projects/mini-dmart/backend/models/Product.js)
-* **Cart**: [`Cart.js`](file:///D:/projects/mini-dmart/backend/models/Cart.js)
-* **CartItem**: [`CartItem.js`](file:///D:/projects/mini-dmart/backend/models/CartItem.js)
-* **Order**: [`Order.js`](file:///D:/projects/mini-dmart/backend/models/Order.js)
-* **OrderItem**: [`OrderItem.js`](file:///D:/projects/mini-dmart/backend/models/OrderItem.js)
-* **Return**: [`Return.js`](file:///D:/projects/mini-dmart/backend/models/Return.js)
-* **Relations**: Associations and foreign keys are defined in [`models/index.js`](file:///D:/projects/mini-dmart/backend/models/index.js).
+* **User**: [`User.js`](backend/models/User.js)
+* **Category**: [`Category.js`](backend/models/Category.js)
+* **Product**: [`Product.js`](backend/models/Product.js)
+* **Cart**: [`Cart.js`](backend/models/Cart.js)
+* **CartItem**: [`CartItem.js`](backend/models/CartItem.js)
+* **Order**: [`Order.js`](backend/models/Order.js)
+* **OrderItem**: [`OrderItem.js`](backend/models/OrderItem.js)
+* **Return**: [`Return.js`](backend/models/Return.js)
+* **Relations**: Associations and foreign keys are defined in [`models/index.js`](backend/models/index.js).
 
 ---
 
@@ -165,8 +165,8 @@ Configure the environment variables using the `.env.example` file located at the
 
 ```env
 PORT=5000
-DATABASE_URL=postgres://user:password@host:port/database_name
-JWT_SECRET=dev_secret_jwt_minidmart_987654321_abc
+DATABASE_URL=
+JWT_SECRET=
 NODE_ENV=development
 FRONTEND_URL=http://localhost:3000
 ```
@@ -174,7 +174,7 @@ FRONTEND_URL=http://localhost:3000
 ---
 
 ## 11. Local Setup & Seeding Instructions
-1. Ensure PostgreSQL is running locally on port `5432` with username `postgres` and password `Root`.
+1. Ensure PostgreSQL is running locally on port `5432` with a configured user.
 2. Connect to psql and create the database:
    ```sql
    CREATE DATABASE mini_dmart;

@@ -41,5 +41,5 @@ $RECYCLE.BIN/
 .DS_Store
 
 # DB data folder (if kept inside root)
-mongodb-data/
+postgres-data/
 msi_log.txt
