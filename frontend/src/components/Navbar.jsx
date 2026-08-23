@@ -10,72 +10,62 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/login', { replace: true });
   };
+
+  // Don't show navbar on auth landing page if not authenticated
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <nav className="navbar">
-      <Link to="/" className="navbar-brand">
+      <Link to={user.role === 'admin' ? '/admin' : user.role === 'staff' ? '/staff' : '/home'} className="navbar-brand">
         🛒 Mini D-Mart
       </Link>
 
       <ul className="navbar-links">
-        {isAuthenticated ? (
-          <>
-            {user.role === 'customer' && (
-              <>
-                <li>
-                  <Link to="/" className="navbar-link">Shop</Link>
-                </li>
-                <li>
-                  <Link to="/orders" className="navbar-link">My Orders</Link>
-                </li>
-                <li>
-                  <Link to="/returns" className="navbar-link">Returns</Link>
-                </li>
-                <li>
-                  <Link to="/cart" className="navbar-link">
-                    Cart <span className="badge">{cartCount}</span>
-                  </Link>
-                </li>
-              </>
-            )}
-
-            {user.role === 'staff' && (
-              <>
-                <li>
-                  <Link to="/staff" className="navbar-link">Staff Dashboard</Link>
-                </li>
-              </>
-            )}
-
-            {user.role === 'admin' && (
-              <>
-                <li>
-                  <Link to="/admin" className="navbar-link">Admin Dashboard</Link>
-                </li>
-              </>
-            )}
-
-            <div className="navbar-user-info">
-              <span>Hello, <strong>{user.name}</strong> ({user.role})</span>
-              <button onClick={handleLogout} className="btn btn-danger" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
-                Logout
-              </button>
-            </div>
-          </>
-        ) : (
+        {user.role === 'customer' && (
           <>
             <li>
-              <Link to="/login" className="navbar-link">Login</Link>
+              <Link to="/home" className="navbar-link">Shop</Link>
             </li>
             <li>
-              <Link to="/register" className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
-                Register
+              <Link to="/orders" className="navbar-link">My Orders</Link>
+            </li>
+            <li>
+              <Link to="/returns" className="navbar-link">Returns</Link>
+            </li>
+            <li>
+              <Link to="/cart" className="navbar-link">
+                Cart <span className="badge">{cartCount}</span>
               </Link>
             </li>
           </>
         )}
+
+        {user.role === 'staff' && (
+          <>
+            <li>
+              <Link to="/staff" className="navbar-link">Staff Dashboard</Link>
+            </li>
+          </>
+        )}
+
+        {user.role === 'admin' && (
+          <>
+            <li>
+              <Link to="/admin" className="navbar-link">Admin Dashboard</Link>
+            </li>
+          </>
+        )}
+
+        <div className="navbar-user-info">
+          <span>Hello, <strong>{user.name}</strong> ({user.role})</span>
+          <button onClick={handleLogout} className="btn btn-danger" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
+            Logout
+          </button>
+        </div>
       </ul>
     </nav>
   );

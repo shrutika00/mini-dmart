@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
+import AuthLanding from './pages/AuthLanding';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProductsPage from './pages/ProductsPage';
@@ -29,13 +30,30 @@ function App() {
             <Navbar />
             <main className="main-content">
               <Routes>
-                {/* Public Access Routes */}
+                {/* Authentication Entry Point */}
+                <Route path="/" element={<AuthLanding />} />
+
+                {/* Public Auth Routes */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
 
-                {/* Customer / Shared Catalog Routes */}
-                <Route path="/" element={<ProductsPage />} />
-                <Route path="/products/:id" element={<ProductDetails />} />
+                {/* Customer / Shared Catalog Routes (Protected) */}
+                <Route
+                  path="/home"
+                  element={
+                    <ProtectedRoute allowedRoles={['customer']}>
+                      <ProductsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/products/:id"
+                  element={
+                    <ProtectedRoute allowedRoles={['customer']}>
+                      <ProductDetails />
+                    </ProtectedRoute>
+                  }
+                />
 
                 {/* Customer Protected Actions */}
                 <Route

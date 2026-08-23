@@ -40,10 +40,8 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     const data = await api.auth.register(userData);
-    if (data.success) {
-      localStorage.setItem('token', data.token);
-      setUser(data.user);
-    }
+    // Do NOT auto-login after registration.
+    // Just return the success response so Register page can redirect to Login.
     return data;
   };
 

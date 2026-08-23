@@ -15,13 +15,13 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     // If logged in but does not have required permissions
-    // Redirect to default dashboard or login based on role
+    // Redirect to default dashboard based on role
     if (user.role === 'admin') {
       return <Navigate to="/admin" replace />;
     } else if (user.role === 'staff') {
       return <Navigate to="/staff" replace />;
     } else {
-      return <Navigate to="/" replace />;
+      return <Navigate to="/home" replace />;
     }
   }
 
